@@ -9,6 +9,8 @@ import useRegisterModal from "@hooks/useRegisterModal";
 import Modal from "./Modal";
 import Heading from "@components/Heading";
 import Input from "@components/inputs/Input";
+import { toast } from "react-hot-toast";
+import Button from "@components/Button";
 
 const RegisterModal = () => {
     const registerModal = useRegisterModal();
@@ -35,7 +37,7 @@ const RegisterModal = () => {
                 registerModal.onClose();
             })
             .catch((error) => {
-                console.log(error);
+                toast.error('Algo salió mal')
             })
             .finally(() => {
                 setIsLoading(false);
@@ -45,7 +47,7 @@ const RegisterModal = () => {
     const bodyContent = (
         <div className="flex flex-col gap-4">
             <Heading 
-            title="Bienvenido a Cauquenes App"
+            title="Bienvenido a Hotels App"
             subtitle="Crea una cuenta" />
             <Input
             id="email"
@@ -54,8 +56,36 @@ const RegisterModal = () => {
             register={register} 
             errors={errors}
             required/>
+            <Input
+            id="name"
+            label="Nombre"
+            disabled={isLoading}
+            register={register} 
+            errors={errors}
+            required/>
+            <Input
+            id="password"
+            type="password"
+            label="Contraseña"
+            disabled={isLoading}
+            register={register} 
+            errors={errors}
+            required/>
+        </div>
+    );
+
+    const footerContent = (
+        <div className="flex flex-col gap-4 mt-3">
+            <hr />
+            <Button
+            outline
+            icon={FcGoogle}
+            label="Continuar con Google"
+            onClick={() => {}}
+            />
         </div>
     )
+
     return ( 
         <Modal 
         disabled={isLoading}
@@ -65,6 +95,7 @@ const RegisterModal = () => {
         onClose={registerModal.onClose}
         onSubmit={handleSubmit(onSubmit)}
         body={bodyContent}
+        footer={footerContent}
         />
      );
 }
