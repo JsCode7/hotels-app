@@ -1,4 +1,10 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Disclaimer
+This project is created for educational purposes only. It does not intend to copy or harm the brand in any way. The goal is to replicate and learn in the process.
+
+We understand that this project may seem similar to the existing brand. However, we want to assure you that we have no intention of infringing any copyright or trademark. 
+If you have any questions or concerns, please do not hesitate to contact me.
+
+Thank you for your understanding.
 
 ## Getting Started
 
