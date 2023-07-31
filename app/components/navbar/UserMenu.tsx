@@ -1,23 +1,33 @@
 "use client";
 
+
 import Avatar from "@components/Avatar";
 import { useCallback, useState } from "react";
-import { AiOutlineMenu } from "react-icons/ai"
+import { AiOutlineMenu } from "react-icons/ai";
 import MenuItem from "./MenuItem";
 import useRegisterModal from "@hooks/useRegisterModal";
+import useLoginModal from "@hooks/useLoginModal";
+import { signOut } from "next-auth/react";
+import { SafeUser } from "@/app/types";
 
-const UserMenu = () => {
-    const registerModal = useRegisterModal();
-    const [isOpen, setIsOpen] = useState(false);
+interface UserMenuProps {
+  currentUser?: SafeUser | null;
+}
 
-    const toggleOpen = useCallback(() => {
-        setIsOpen((value) => !value);
-    }, [])
-    return ( 
-        <div className="relative">
-            <div className="flex flex-row items-center gap-3">
-                <div onClick={()=> {}}
-                className="hidden
+const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
+  const registerModal = useRegisterModal();
+  const loginModal = useLoginModal();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleOpen = useCallback(() => {
+    setIsOpen((value) => !value);
+  }, []);
+  return (
+    <div className="relative">
+      <div className="flex flex-row items-center gap-3">
+        <div
+          onClick={() => {}}
+          className="hidden
                 md:block
                 text-sm
                 font-semibold
@@ -26,11 +36,13 @@ const UserMenu = () => {
                 rounded-full
                 hover:bg:neutral-100
                 transition
-                cursor-pointer">
-                    Publica tu hotel
-                </div>
-                <div onClick={toggleOpen}
-                className="
+                cursor-pointer"
+        >
+          Publica tu hotel
+        </div>
+        <div
+          onClick={toggleOpen}
+          className="
                 p-4
                 md:py-1
                 md:px-2
@@ -43,16 +55,18 @@ const UserMenu = () => {
                 rounded-full
                 cursor-pointer
                 hover:shadow-md
-                transition">
-                    <AiOutlineMenu />
-                    <div className="hidden md:block">
-                        <Avatar />
-                    </div>
-                </div>
-            </div>
+                transition"
+        >
+          <AiOutlineMenu />
+          <div className="hidden md:block">
+            <Avatar src={currentUser?.image}/>
+          </div>
+        </div>
+      </div>
 
-            {isOpen && (
-                <div className="absolute rounded-xl
+      {isOpen && (
+        <div
+          className="absolute rounded-xl
                 shadow-md
                 w-[40vw]
                 md:w-3/4
@@ -60,21 +74,30 @@ const UserMenu = () => {
                 overflow-hidden
                 right-0
                 top-12
-                text-sm">
-                    <div className="flex flex-col cursor-pointer">
-                        <>
-                        <MenuItem 
-                            onClick={()=> {}}
-                            label="Iniciar sesión"/>
-                            <MenuItem 
-                            onClick={registerModal.onOpen}
-                            label="Registrarse"/>
-                        </>
-                    </div>
-                </div>
+                text-sm"
+        >
+          <div className="flex flex-col cursor-pointer">
+            {currentUser ? (
+              <>
+                <MenuItem onClick={() => {}} label="Mis viajes" />
+                <MenuItem onClick={() => {}} label="Mis favoritos" />
+                <MenuItem onClick={() => {}} label="Mis reservas" />
+                <MenuItem onClick={() => {}} label="Mis propiedades" />
+                <MenuItem onClick={() => {}} label="Airbnb mi casa" />
+                <hr />
+                <MenuItem onClick={() => signOut()} label="Logout" />
+              </>
+            ) : (
+              <>
+                <MenuItem onClick={loginModal.onOpen} label="Iniciar sesión" />
+                <MenuItem onClick={registerModal.onOpen} label="Registrarse" />
+              </>
             )}
+          </div>
         </div>
-     );
-}
- 
+      )}
+    </div>
+  );
+};
+
 export default UserMenu;
